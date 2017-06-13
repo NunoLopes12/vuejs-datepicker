@@ -156,6 +156,10 @@ export default {
     required: {
       type: Boolean,
       default: false
+    },
+    noDay: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -333,15 +337,23 @@ export default {
           this.showMonthCalendar()
           break
         default:
-          this.showDayCalendar()
+          if (this.noDay) {
+            this.showMonthCalendar()
+          } else {
+            this.showDayCalendar()
+          }
           break
       }
     },
     showDayCalendar () {
       this.close()
-      this.showDayView = true
-      this.$emit('opened')
-      document.addEventListener('click', this.clickOutside, false)
+      if (this.noDay) {
+        this.setDate(this.currDate)
+      } else {
+        this.showDayView = true
+        this.$emit('opened')
+        document.addEventListener('click', this.clickOutside, false)
+      }
     },
     showMonthCalendar () {
       this.close()
